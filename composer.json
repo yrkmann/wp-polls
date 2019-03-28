@@ -1,0 +1,15 @@
+{
+  "name": "yrkmann/wp-polls",
+  "type": "wordpress-plugin",
+  "keywords": [
+    "wordpress",
+    "plugin"
+  ],
+  "config": {
+    "preferred-install": "dist"
+  },
+  "require": {
+    "php": ">=7.2",
+    "composer/installers": "^1.0.0"
+  }
+}
