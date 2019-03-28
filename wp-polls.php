@@ -1351,7 +1351,7 @@ function vote_poll_process($poll_id, $poll_aid_array = [])
 
 	$polla_aids = $wpdb->get_col( $wpdb->prepare( "SELECT polla_aid FROM $wpdb->pollsa WHERE polla_qid = %d", $poll_id ) );
 	$is_real = count( array_intersect( $poll_aid_array, $polla_aids ) ) === count( $poll_aid_array );
-	
+
 	if( !$is_real ) {
 		throw new InvalidArgumentException(sprintf(__('Invalid Answer to Poll ID #%s', 'wp-polls'), $poll_id));
 	}
@@ -1369,7 +1369,7 @@ function vote_poll_process($poll_id, $poll_aid_array = [])
 	}
 
 	$is_poll_open = (int) $wpdb->get_var( $wpdb->prepare( "SELECT COUNT(*) FROM $wpdb->pollsq WHERE pollq_id = %d AND pollq_active = 1", $poll_id ) );
-	
+
 	if ($is_poll_open === 0) {
 		throw new InvalidArgumentException(sprintf(__( 'Poll ID #%s is closed', 'wp-polls' ), $poll_id ));
 	}
@@ -1443,7 +1443,7 @@ function vote_poll_process($poll_id, $poll_aid_array = [])
 			);
 		}
 	}
-	do_action( 'wp_polls_vote_poll_success' );
+	do_action( 'wp_polls_vote_poll_success', $poll_id );
 
 	return display_pollresult($poll_id, $poll_aid_array, false);
 }
@@ -1481,7 +1481,7 @@ function vote_poll() {
 			case 'process':
 				try {
 					$poll_aid_array = array_unique( array_map('intval', array_map('sanitize_key', explode( ',', $_POST["poll_$poll_id"] ) ) ) );
-					echo vote_poll_process($poll_id, $poll_aid_array);				
+					echo vote_poll_process($poll_id, $poll_aid_array);
 				} catch (Exception $e) {
 					echo $e->getMessage();
 				}
